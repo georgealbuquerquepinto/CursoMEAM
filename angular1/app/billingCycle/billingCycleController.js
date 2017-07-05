@@ -51,8 +51,8 @@
       $http.put(updateUrl, vm.billingCycle).then(function(response){
         vm.refresh()
         msgs.addSuccess('Operação realizada com sucesso!')
-      }).error(function(data) {
-        msgs.addError(data.errors)
+      }).catch(function(response) {
+        msgs.addError(response.data.errors)
       })
     }
 
@@ -61,8 +61,8 @@
       $http.delete(deleteUrl, vm.billingCycle).then(function(response){
         vm.refresh()
         msgs.addSuccess('Operação realizada com sucesso!')
-      }).error(function(data) {
-        msgs.addError(data.errors)
+      }).catch(function(response) {
+        msgs.addError(response.data.errors)
       })
     }
 
