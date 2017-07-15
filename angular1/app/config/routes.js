@@ -12,8 +12,7 @@ angular.module('primeiraApp')
         templateUrl: "billingCycle/tabs.html"
       })
 
-      //$httpProvider.interceptors.push('handleResponseError')
-      //$urlRouterProvider.otherwise('/dashboard')
+      $httpProvider.interceptors.push('handleResponseError')
     }
   ])
   .run([
@@ -33,10 +32,16 @@ angular.module('primeiraApp')
  
         if (!user && !isAuthPage) { 
           $window.location.href = authPage 
-        } else if (user && !user.isValid) { 
-          user.isValid = true 
-          $http.defaults.headers.common.Authorization = user.token
-          isAuthPage ? $window.location.href = '/' : $location.path('/dashboard')
+        } else if (user && !user.isValid) {
+          auth.validateToken(user.token, (err, valid) => {
+            if (!valid) {
+              $window.location.href = authPage
+            } else {
+              user.isValid = true 
+              $http.defaults.headers.common.Authorization = user.token
+              isAuthPage ? $window.location.href = '/' : $location.path('/dashboard')
+            }
+          })
         } 
       } 
     } 

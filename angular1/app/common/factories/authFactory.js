@@ -24,11 +24,11 @@
     }
 
     function submit(url, user, callback) {
-      $http.post(`${consts.oapiUrl}/${url}`, user).then(resp => {
+      $http.post(`${consts.oapiUrl}/${url}`, user).then(response => {
         localStorage.setItem(consts.userKey, JSON.stringify(response.data))
         $http.defaults.headers.common.Authorization = response.data.token
         if (callback) callback(null, response.data)
-      }).catch(function (resp) {
+      }).catch(function (response) {
         if (callback) callback(response.data.errors, null)
       })
     }
@@ -42,14 +42,14 @@
 
     function validateToken(token, callback) {
       if (token) {
-        $http.post(`${consts.oapiUrl}/validateToken`, { token }).then(resp => {
+        $http.post(`${consts.oapiUrl}/validateToken`, { token }).then(response => {
           if (!response.data.valid) {
             logout()
           } else {
             $http.defaults.headers.common.Authorization = getUser().token
           }
           if (callback) callback(null, response.data.valid)
-        }).catch(function (resp) {
+        }).catch(function (response) {
           if (callback) callback(response.data.errors)
         })
       } else {
